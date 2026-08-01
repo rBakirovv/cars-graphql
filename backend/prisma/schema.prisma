@@ -18,5 +18,8 @@ model Car {
   vin       String   @unique @db.VarChar(17)
   createdAt DateTime @default(now()) @map("created_at")
 
+  @@index([brand(ops: raw("gin_trgm_ops"))], type: Gin)
+  @@index([model(ops: raw("gin_trgm_ops"))], type: Gin)
+  @@index([color(ops: raw("gin_trgm_ops"))], type: Gin)
   @@map("cars")
 }

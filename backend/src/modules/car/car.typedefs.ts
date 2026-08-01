@@ -1,7 +1,5 @@
 export const carTypeDefs = `#graphql
-  """
-  Автомобиль в каталоге
-  """
+  """Автомобиль в каталоге"""
   type Car {
     id: ID!
     brand: String!
@@ -14,12 +12,22 @@ export const carTypeDefs = `#graphql
     createdAt: String!
   }
 
+  input CarFilterInput {
+    """Поиск по подстроке"""
+    brand: String
+    model: String
+    color: String
+  }
+
   type Query {
     """Получить все автомобили"""
     getCars: [Car!]!
     
     """Получить автомобиль по ID"""
     getCarById(id: ID!): Car
+
+    """Нечёткий поиск автомобиля по бренду, модели и цвету"""
+    searchCars(query: String! limit: Int = 20): [Car!]!
   }
 
   type Mutation {

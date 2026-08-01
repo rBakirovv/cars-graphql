@@ -15,3 +15,9 @@ export interface CreateCarArgs {
 export interface CarByIdArgs {
   id: string;
 }
+
+export interface SearchCarsArgs {
+  query: string;
+  limit?: number;
+}
+
