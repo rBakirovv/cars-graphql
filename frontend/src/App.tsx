@@ -4,12 +4,14 @@ import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import { Button } from '@/components/ui/button'
 import './App.css'
+import { ThemeProvider } from './components/theme-provider'
+import { ModeToggle } from './components/mode-toggle'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <section id="center">
         <div className="hero">
           <img src={heroImg} className="base" width="170" height="179" alt="" />
@@ -33,6 +35,7 @@ function App() {
         <Button onClick={() => setCount((count) => count + 1)}>
           Тестовая кнопка {count}
         </Button>
+        <ModeToggle />
       </section>
 
       <div className="ticks"></div>
@@ -120,7 +123,7 @@ function App() {
 
       <div className="ticks"></div>
       <section id="spacer"></section>
-    </>
+    </ThemeProvider>
   )
 }
 
