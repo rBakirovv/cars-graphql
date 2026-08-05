@@ -1,5 +1,5 @@
 import prisma from '../../prisma/client';
-import { UpdateCarArgs, CreateCarArgs, CarByIdArgs, SearchCarsArgs } from './car.types';
+import { UpdateCarArgs, CreateCarArgs, CarByIdArgs } from './car.types';
 
 export const carService = {
   getCars: () => prisma.car.findMany(),

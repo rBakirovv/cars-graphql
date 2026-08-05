@@ -1,0 +1,5 @@
+dist
+node_modules
+
+# Сгенерировано Prisma — не наш код, форматировать нечего.
+src/generated
