@@ -4,3 +4,6 @@ node_modules
 # Сгенерировано shadcn CLI — держим в исходном форматировании,
 # чтобы `shadcn add --diff` показывал только смысловые изменения.
 src/components/ui
+
+# Сгенерировано graphql-codegen.
+src/api/generated
