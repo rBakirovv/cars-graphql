@@ -1,15 +1,42 @@
-import { Spinner } from '@/components/ui/spinner';
 import CarCard from './CarCard';
 import { useCars } from '@/hooks/cars/useСars';
+import { CarCardSkeleton } from './CarCardSkeleton';
+import { AlertCircleIcon } from 'lucide-react';
+import {
+  Alert,
+  AlertAction,
+  AlertDescription,
+  AlertTitle,
+} from '@/components/ui/alert';
+import { Button } from '../ui/button';
 
 export default function CarsList() {
-  const { data, isLoading } = useCars();
+  const { data, isLoading, isError, error, refetch } = useCars();
 
   if (isLoading) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
-        <Spinner className="w-10 h-10" />
+      <div className="grid grid-cols-3 gap-4">
+        {Array.from({ length: 9 }, (_, i) => (
+          <CarCardSkeleton key={i} />
+        ))}
       </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Alert variant="destructive" className="f-wull">
+        <AlertCircleIcon />
+        <AlertTitle>Не удалось загрузить каталог</AlertTitle>
+        <AlertDescription>
+          {error instanceof Error ? error.message : 'Неизвестная ошибка'}
+        </AlertDescription>
+        <AlertAction>
+          <Button size="xs" variant="default" onClick={() => refetch()}>
+            Повторить
+          </Button>
+        </AlertAction>
+      </Alert>
     );
   }
 
