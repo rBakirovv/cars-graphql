@@ -1,13 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
 import { Spinner } from '@/components/ui/spinner';
-import { gqlClient } from '@/lib/graphql-client';
-import { CarsQuery } from '@/api/cars/cars';
+import CarCard from './CarCard';
+import { useCars } from '@/hooks/cars/useСars';
 
 export default function CarsList() {
-  const { isLoading } = useQuery({
-    queryKey: ['cars'],
-    queryFn: () => gqlClient.request(CarsQuery),
-  });
+  const { data, isLoading } = useCars();
 
   if (isLoading) {
     return (
@@ -16,6 +12,13 @@ export default function CarsList() {
       </div>
     );
   }
- 
-  return <div className="grid "></div>;
+
+  return (
+    <div className="grid grid-cols-3 gap-4">
+      {data?.getCars &&
+        data.getCars.map((car) => {
+          return <CarCard car={car} key={car.id} />;
+        })}
+    </div>
+  );
 }

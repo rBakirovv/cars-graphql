@@ -1,11 +1,11 @@
 import { CarFront } from 'lucide-react';
-
 import { ModeToggle } from '@/components/ModeToggle';
+import { Card } from './ui/card';
 
 export function Header() {
   return (
-    <header className="sticky top-2 z-40 rounded-3xl border border-border bg-background/80 backdrop-blur">
-      <div className="flex h-14 items-center gap-6 px-4">
+    <header className="sticky top-2 z-40 bg-background/80 backdrop-blur rounded-4xl">
+      <Card className="flex flex-row items-center gap-6 p-4">
         <a
           href="/"
           className="flex items-center gap-2 font-medium text-foreground"
@@ -17,7 +17,7 @@ export function Header() {
         <div className="ml-auto">
           <ModeToggle />
         </div>
-      </div>
+      </Card>
     </header>
   );
 }
