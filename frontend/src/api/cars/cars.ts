@@ -13,3 +13,30 @@ export const CarsQuery = graphql(`
     }
   }
 `);
+
+export const CreateCarMutation = graphql(`
+  mutation CreateCar(
+    $brand: String!
+    $model: String!
+    $year: Int!
+    $price: Int!
+    $mileage: Int!
+    $color: String!
+    $vin: String!
+  ) {
+    createCar(
+      brand: $brand
+      model: $model
+      year: $year
+      price: $price
+      mileage: $mileage
+      color: $color
+      vin: $vin
+    ) {
+      id
+      brand
+      model
+      mileage
+    }
+  }
+`);
