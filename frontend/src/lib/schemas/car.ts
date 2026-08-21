@@ -56,4 +56,17 @@ export const createCarSchema = z.object({
     .transform((v) => v.toUpperCase()),
 });
 
+export const searchCarSchema = z.object({
+  query: z
+    .string()
+    .trim()
+    .nonempty('Введите запрос')
+    .max(100, 'Не более 100 символов')
+    .refine(
+      (q) => q.split(/\s+/).some((token) => token.length >= 3),
+      'Слово для поиска должно быть не короче 3 символов',
+    ),
+});
+
 export type CreateCarInput = z.infer<typeof createCarSchema>;
+export type SearchCarsInput = z.infer<typeof searchCarSchema>;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createCarSchema } from '@/lib/schemas/car';
+import { createCarSchema, searchCarSchema } from '@/lib/schemas/car';
 
 const base = {
   brand: 'Toyota',
@@ -198,5 +198,60 @@ describe('vin', () => {
     expect(message({ vin: 'JTDBE32K60012345-' })).toBe(
       'VIN не может содержать I, O и Q',
     );
+  });
+});
+
+describe('searchCarSchema', () => {
+  const search = (query: string) => searchCarSchema.safeParse({ query });
+
+  const searchMessage = (query: string) => {
+    const r = search(query);
+    return r.success ? undefined : r.error.issues[0].message;
+  };
+
+  it('принимает слово из трёх букв', () => {
+    const r = search('bmw');
+    expect(r.success && r.data.query).toBe('bmw');
+  });
+
+  it('обрезает окружающие пробелы', () => {
+    const r = search('  bmw  ');
+    expect(r.success && r.data.query).toBe('bmw');
+  });
+
+  it('отклоняет пустую строку', () => {
+    expect(searchMessage('')).toBe('Введите запрос');
+  });
+
+  it('отклоняет строку из одних пробелов', () => {
+    expect(searchMessage('     ')).toBe('Введите запрос');
+  });
+
+  it('отклоняет слово короче трёх букв', () => {
+    expect(searchMessage('bm')).toBe(
+      'Слово для поиска должно быть не короче 3 символов',
+    );
+  });
+
+  it('отклоняет набор коротких слов', () => {
+    expect(searchMessage('a b c')).toBe(
+      'Слово для поиска должно быть не короче 3 символов',
+    );
+  });
+
+  it('принимает запрос, где годен хотя бы один токен', () => {
+    expect(search('bmw x5').success).toBe(true);
+  });
+
+  it('принимает ровно 100 символов', () => {
+    expect(search('a'.repeat(100)).success).toBe(true);
+  });
+
+  it('отклоняет 101 символ', () => {
+    expect(searchMessage('a'.repeat(101))).toBe('Не более 100 символов');
+  });
+
+  it('сообщает о длине раньше, чем о токенах', () => {
+    expect(searchMessage('ab '.repeat(50))).toBe('Не более 100 символов');
   });
 });

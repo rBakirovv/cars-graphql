@@ -49,3 +49,17 @@ export const DeleteCarMutation = graphql(`
     }
   }
 `);
+
+export const SearchCarsQuery = graphql(`
+  query SearchCars($query: String!, $limit: Int) {
+    searchCars(query: $query, limit: $limit) {
+      id
+      brand
+      model
+      year
+      price
+      mileage
+      color
+    }
+  }
+`);

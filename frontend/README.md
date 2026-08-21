@@ -1,75 +1,57 @@
-# React + TypeScript + Vite
+# frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SPA каталога автомобилей: React 19, Vite 8, TypeScript 6, Tailwind 4, shadcn/ui на Base UI.
 
-Currently, two official plugins are available:
+Данные — TanStack Query поверх `graphql-request`, типы запросов генерируются из схемы бэкенда через GraphQL Codegen. Формы — react-hook-form с валидацией на zod.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Общее описание проекта и порядок запуска целиком — в [README репозитория](../README.md).
 
-## React Compiler
+## Быстрый старт
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Бэкенд должен быть уже запущен: `codegen` тянет схему по HTTP.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+npm run codegen
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Переменные окружения — в `.env`:
 
 ```
+VITE_API_URL=http://localhost:3000/graphql
+```
+
+## Команды
+
+| Команда | Что делает |
+|---|---|
+| `npm run dev` | Dev-сервер Vite с HMR на `http://localhost:5173` |
+| `npm run build` | Проверка типов (`tsc -b`) и production-сборка |
+| `npm run preview` | Локальный просмотр собранной версии |
+| `npm run codegen` | Генерация типов из GraphQL-схемы |
+| `npm run codegen:watch` | То же в режиме наблюдения — держать рядом с `dev` |
+| `npm test` | Vitest в режиме наблюдения |
+| `npm run lint` | ESLint |
+| `npm run format` | Prettier по `src/` |
+| `npm run format:check` | Проверка форматирования без правок |
+
+## Структура
+
+```
+src/
+  api/cars/        GraphQL-документы и производные типы
+  api/generated/   сгенерировано кодогенератором — не править
+  components/ui/   компоненты shadcn — обновляются через CLI
+  components/cars/ компоненты каталога
+  hooks/           хуки данных и темы
+  lib/schemas/     zod-схемы форм
+```
+
+`api/generated` и `components/ui` выведены из-под Prettier и ESLint: это внешний код.
+
+## Заметки
+
+**Кодогенерация.** Изменил текст запроса — перезапусти `codegen`, иначе `graphql()` вернёт `unknown` и TypeScript не примет документ.
+
+**Тема.** Класс `dark` ставится синхронным скриптом в `index.html` до первой отрисовки — иначе при загрузке мелькает светлый фон. Ключ хранилища и значение по умолчанию продублированы там и в `App.tsx`, менять нужно в обоих местах.

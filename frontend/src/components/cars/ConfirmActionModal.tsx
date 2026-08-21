@@ -23,6 +23,7 @@ type ConfirmActionModalProps = {
   /** Содержимое кнопки-триггера: иконка и текст для скринридера. */
   children: React.ReactNode;
   onConfirm: () => void | Promise<unknown>;
+  /** Оформление кнопки-триггера. */
   className?: string;
 };
 
@@ -45,8 +46,7 @@ export default function ConfirmActionModal({
       await onConfirm();
       actionsRef.current?.close();
     } catch {
-      // Диалог остаётся открытым. Показать ошибку — забота вызывающего:
-      // он владеет мутацией и её состоянием.
+      // Диалог остаётся открытым. Показать ошибку — забота вызывающего
     } finally {
       setPending(false);
     }
@@ -54,7 +54,11 @@ export default function ConfirmActionModal({
 
   return (
     <Dialog actionsRef={actionsRef}>
-      <DialogTrigger render={<Button className={className} variant={triggerVariant} size="icon" />}>
+      <DialogTrigger
+        render={
+          <Button className={className} variant={triggerVariant} size="icon" />
+        }
+      >
         {children}
       </DialogTrigger>
       <DialogContent>
