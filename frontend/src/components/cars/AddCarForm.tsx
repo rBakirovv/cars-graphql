@@ -6,10 +6,7 @@ import {
   FieldLabel,
   FieldError,
 } from '@/components/ui/field';
-import {
-  DialogClose,
-  DialogFooter,
-} from '@/components/ui/dialog';
+import { DialogClose, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import type { z } from 'zod';
@@ -57,7 +54,10 @@ export default function AddCarForm({ onSuccess }: { onSuccess?: () => void }) {
   };
 
   return (
-    <form className="flex flex-col gap-6" onSubmit={form.handleSubmit(onSubmit)}>
+    <form
+      className="flex flex-col gap-6"
+      onSubmit={form.handleSubmit(onSubmit)}
+    >
       <FieldGroup className="gap-4">
         <FieldGroup className="grid grid-cols-2">
           <Controller

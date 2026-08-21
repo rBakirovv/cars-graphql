@@ -3,9 +3,14 @@ import { z } from 'zod';
 const currentYear = new Date().getFullYear();
 
 export const createCarSchema = z.object({
-  brand: z.string().nonempty('Укажите бренд').max(100, 'Не более 100 символов'),
+  brand: z
+    .string()
+    .trim()
+    .nonempty('Укажите бренд')
+    .max(100, 'Не более 100 символов'),
   model: z
     .string()
+    .trim()
     .nonempty('Укажите модель')
     .max(100, 'Не более 100 символов'),
   year: z
@@ -19,7 +24,12 @@ export const createCarSchema = z.object({
         .min(1900, 'Не раньше 1900')
         .max(currentYear + 1, `Не позже ${currentYear + 1}`),
     ),
-  color: z.string().nonempty('Укажите цвет').max(100, 'Не более 50 символов'),
+  // 50 — предел колонки в базе: color String @db.VarChar(50).
+  color: z
+    .string()
+    .trim()
+    .nonempty('Укажите цвет')
+    .max(50, 'Не более 50 символов'),
   price: z
     .string()
     .nonempty('Укажите цену')
