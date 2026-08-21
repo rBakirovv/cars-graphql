@@ -1,6 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { gqlClient } from '@/lib/graphql-client';
-import { CarsQuery, CreateCarMutation } from '@/api/cars/cars';
+import {
+  CarsQuery,
+  CreateCarMutation,
+  DeleteCarMutation,
+} from '@/api/cars/cars';
 import type { CreateCarInput } from '@/lib/schemas/car';
 
 export const useCars = () => {
@@ -19,5 +23,14 @@ export const useCreateCar = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cars'] });
     },
+  });
+};
+
+export const useDeleteCar = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => gqlClient.request(DeleteCarMutation, { id }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['cars'] }),
   });
 };

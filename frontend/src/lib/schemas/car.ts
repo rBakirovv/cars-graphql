@@ -24,7 +24,6 @@ export const createCarSchema = z.object({
         .min(1900, 'Не раньше 1900')
         .max(currentYear + 1, `Не позже ${currentYear + 1}`),
     ),
-  // 50 — предел колонки в базе: color String @db.VarChar(50).
   color: z
     .string()
     .trim()

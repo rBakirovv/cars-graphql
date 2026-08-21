@@ -37,6 +37,15 @@ export const CreateCarMutation = graphql(`
       brand
       model
       mileage
+      color
+    }
+  }
+`);
+
+export const DeleteCarMutation = graphql(`
+  mutation DeleteCar($id: ID!) {
+    deleteCar(id: $id) {
+      id
     }
   }
 `);

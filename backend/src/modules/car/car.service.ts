@@ -33,6 +33,20 @@ export const carService = {
       data,
     }),
 
-  deleteCar: ({ id }: CarByIdArgs) =>
-    prisma.car.delete({ where: { id: Number(id) } }),
+  deleteCar: async ({ id }: CarByIdArgs) => {
+    try {
+      return await prisma.car.delete({ where: { id: Number(id) } });
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2025'
+      ) {
+        throw new GraphQLError('Автомобиль не найден', {
+          extensions: { code: 'NOT_FOUND', field: 'id' },
+        });
+      }
+
+      throw error;
+    }
+  },
 };
